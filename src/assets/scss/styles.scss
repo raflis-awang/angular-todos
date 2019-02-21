@@ -1,0 +1,346 @@
+@import 'lib/reset.min';
+@import 'constant';
+@import 'bem';
+
+/*
+ * Global stuff
+ */
+html,
+body {
+  height: 100%;
+  width: 100%;
+  background-color: #f2f2f3;
+  color: #333;
+  display: flex;
+  font-family: 'Roboto', sans-serif;
+  box-shadow: inset 0 0 5rem rgba(0, 0, 0, .1);
+}
+
+a,
+a:focus,
+a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+app-root {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+app-todos-listing {
+  width: 100%;
+}
+
+/*
+ * Masthead
+ */
+.masthead {
+  margin: 1rem 0;
+  width: 100%;
+  @include e('brand') {
+    margin-bottom: 0;
+    color: $green;
+    float: left;
+    padding: .25rem 0;
+    font-weight: 800;
+    font-size: 20px;
+  }
+}
+
+/*
+ * Navigation
+ */
+.nav {
+  @include e('inner') {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+  @include e('link') {
+    padding: .25rem 0;
+    font-weight: 700;
+    color: rgba(255, 255, 255, .5);
+    background-color: transparent;
+    border-bottom: .25rem solid transparent;
+    color: #333;
+    @include m('active') {
+      border-bottom-color: #333;
+    }
+    & + & {
+      margin-left: 1em;
+    }
+    &:hover,
+    &:focus {
+      color: #999;
+      border-bottom-color: #999;
+    }
+  }
+}
+
+@media (min-width: 48em) {
+  .masthead-brand {
+    float: left;
+  }
+  .nav-masthead {
+    float: right;
+  }
+}
+
+/*
+ * Main
+ */
+.main {
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+/*
+ * Footer
+ */
+.footer {
+  @include e('inner') {
+    color: #666;
+    text-align: center;
+    font-size: 12px;
+  }
+}
+
+/*
+ * Form
+ */
+ .form {
+  background-color: #FFF;
+  box-shadow: 0px 11px 30px -8px rgba(0, 0, 0, 0.15);
+  margin: 0.1em 0;
+  margin-bottom: 1em;
+  border-radius: 5px;
+  form {
+    width: 100%;
+  }
+  @include e('wrap') {
+    width: 100%;
+    display: flex;
+  }
+  @include e('input') {
+    flex: 0 0 100%;
+    margin: 0;
+    background-color: transparent;
+    border: 0;
+    min-height: 3.5em;
+    line-height: 3.0em;
+    padding: 0 1em;
+    font-size: 18px;
+    border: 1px solid #999;
+    border-radius: 5px;
+    &:active, &:focus{
+      border: 0;
+      outline: none;
+      border-radius: 5px;
+    }
+    &:focus{
+      border: 1px solid $green;
+    }
+    &::placeholder {
+      color: #CCC;
+    }
+  }
+}
+
+/*
+ * Todos
+ */
+
+.todos {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transition: visibility 0.5s ease-out, opacity 0.5s ease-out;
+  font-weight: 500;
+  &.loaded {
+    visibility:visible;
+    opacity:1;
+  }
+  @include e('list') {
+    flex: 1;
+    margin: 0.2em 0;
+    display: table-cell;
+    vertical-align: middle;
+    overflow: hidden;
+    position: relative;
+    border-radius: 5px;
+    box-shadow: 0px 11px 30px -8px rgba(0, 0, 0, 0.15);
+    border: 1px solid #CCC;
+    &.done {
+      box-shadow: none;
+      transition: all 0.5s ease-out;
+      .todos__wrap {
+        background-color: #f4f4f4;
+        &:hover {
+          background-color: #ececec;
+        }
+        .todos__checkbox {
+          & + label:before {
+            border: 2px solid #4d8825;
+          }
+          &:checked + label:after {
+            background: #FFF;
+            box-shadow:
+              2px 0 0 #FFF,
+              4px 0 0 #FFF,
+              4px -2px 0 #FFF,
+              4px -4px 0 #FFF,
+              4px -6px 0 #FFF,
+              4px -8px 0 #FFF;
+          }
+        }
+      }
+    }
+  }
+  @include e('wrap') {
+    color: #333;
+    width: 100%;
+    min-height: 3.5em;
+    line-height: 3.5em;
+    padding: 0 1em;
+    font-size: 18px;
+    background: #FFF;
+    transition: background-color 0.5s ease;
+    &:hover {
+      background-color: #f4f4f4;
+    }
+  }
+  @include e('close') {
+    position: absolute;
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 700;
+    top: 7px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    padding-top: 1px;
+    text-align: center;
+    border-radius: 10px;
+    // transform: scaleY(0.8);
+    cursor: pointer;
+    background-clip:content-box;
+    background-color: transparent;
+    &:before {
+      color: #CCC;
+      content: 'X';
+    }
+    &:hover {
+      background-color: #222;
+    }
+  }
+  @include e('checkbox') {
+    position: absolute;
+    opacity: 0;
+    & + label {
+      position: relative;
+      cursor: pointer;
+      padding: 0;
+      width: 100%;
+      span {
+        position: absolute;
+        font-size: 11px;
+        color: #CCC;
+        bottom: -15px;
+        right: -5px;
+      }
+    }
+    & + label:before {
+      content: '';
+      margin-right: 0.7em;
+      display: inline-block;
+      vertical-align: text-top;
+      width: 25px;
+      height: 25px;
+      border: 2px solid $checkboxColor;
+      border-radius: 15px;
+    }
+    &:hover + label:before {
+      border: 2px solid $checkboxColor;
+    }
+    &:focus + label:before {
+      background: #2e2e2e;
+      border: 2px solid #FFF;
+    }
+    &:checked + label:before {
+      background: $green;
+      border: 2spx solid #64ba2b !important;
+    }
+    &:checked + label:after {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 32px;
+      background: #FFF;
+      width: 2px;
+      height: 2px;
+      box-shadow:
+        2px 0 0 $checkboxColor,
+        4px 0 0 $checkboxColor,
+        4px -2px 0 $checkboxColor,
+        4px -4px 0 $checkboxColor,
+        4px -6px 0 $checkboxColor,
+        4px -8px 0 $checkboxColor;
+      transform: rotate(45deg);
+    }
+    &:checked + label {
+      color: #a6a6a6;
+      text-decoration: line-through;
+      text-decoration-color: #a6a6a6;
+    }
+  }
+}
+
+
+
+/*
+ * Loading
+ */
+.loading {
+  text-align: center;
+  width: 100%;
+  padding: 50px;
+}
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 32px;
+  height: 32px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 31px;
+  height: 31px;
+  margin: 6px;
+  border: 3px solid #666;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #666 transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

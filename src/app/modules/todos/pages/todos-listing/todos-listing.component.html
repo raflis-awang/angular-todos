@@ -1,0 +1,25 @@
+<div class="form">
+  <form
+    [formGroup]="formData"
+    #form="ngForm"
+    (ngSubmit)="submit(formData.value)"
+  >
+    <div class="form__wrap">
+      <input autofocus class="form__input" type="text" formControlName="task" placeholder="Add new todo item...">
+    </div>
+  </form>
+</div>
+
+<div class="loading" *ngIf='isLoading'>
+  <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+</div>
+
+<ul class="todos" [class.loaded]="!isLoading">
+  <li class="todos__list" [class.done]="row.done" *ngFor="let row of todos">
+    <div class="todos__wrap" title="{{ row.task }}">
+      <div class="todos__close" (click)="remove(row)"></div>
+      <input class="todos__checkbox" id="checkbox-{{ row.id }}" value="true" [checked]="row.done" (change)="changeStatus(row, $event)" type="checkbox">
+      <label for="checkbox-{{ row.id }}">{{ row.task }} <span>{{ row.timeStamp | timeAgo }}</span></label>
+    </div>
+  </li>
+</ul>
