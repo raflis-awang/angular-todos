@@ -1,8 +1,8 @@
 {
   "name": "todo-prototype",
   "author": "Raflis Awang",
-  "description": "Ørsted Test: Angular Todo App",
-  "version": "0.0.1",
+  "description": "Angular Todo App",
+  "version": "0.0.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
